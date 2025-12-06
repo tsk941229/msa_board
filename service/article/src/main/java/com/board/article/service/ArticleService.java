@@ -5,7 +5,7 @@ import com.board.article.repository.ArticleRepository;
 import com.board.article.service.request.ArticleCreateRequest;
 import com.board.article.service.request.ArticleUpdateRequest;
 import com.board.article.service.response.ArticleResponse;
-import kuke.board.common.snowflake.Snowflake;
+import msa.board.common.snowflake.Snowflake;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
