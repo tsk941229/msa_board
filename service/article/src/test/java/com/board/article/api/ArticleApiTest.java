@@ -1,6 +1,5 @@
 package com.board.article.api;
 
-import com.board.article.entity.Article;
 import com.board.article.service.response.ArticleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,9 +12,10 @@ public class ArticleApiTest {
 
     @Test
     void createTest() {
-        create(new ArticleCreateRequest(
-                "hi", "my content", 1L, 1L
+        ArticleResponse articleResponse = create(new ArticleCreateRequest(
+                "hi", "my content", 256342627421904896L, 256342627421904896L
         ));
+        System.out.println("articleResponse.toString() : " + articleResponse.toString());
     }
 
     ArticleResponse create(ArticleCreateRequest request) {
@@ -28,7 +28,7 @@ public class ArticleApiTest {
     
     @Test
     void readTest() {
-        ArticleResponse response = read(1L);
+        ArticleResponse response = read(256342627421904896L);
         System.out.println("response = " + response);
     }
 
@@ -42,8 +42,8 @@ public class ArticleApiTest {
 
     @Test
     void updateTest() {
-        update(1L);
-        ArticleResponse response = read(1L);
+        update(256342627421904896L);
+        ArticleResponse response = read(256342627421904896L);
         System.out.println("response = " + response);
     }
 
@@ -57,7 +57,7 @@ public class ArticleApiTest {
 
     @Test
     void deleteTest() {
-        delete(1L);
+        delete(256342627421904896L);
     }
 
     void delete(Long articleId) {

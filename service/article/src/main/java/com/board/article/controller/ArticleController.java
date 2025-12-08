@@ -5,10 +5,9 @@ import com.board.article.service.request.ArticleCreateRequest;
 import com.board.article.service.request.ArticleUpdateRequest;
 import com.board.article.service.response.ArticleResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ArticleController {
 

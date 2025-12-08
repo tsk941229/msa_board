@@ -19,8 +19,8 @@ public class ArticleService {
 
     @Transactional
     public ArticleResponse create(ArticleCreateRequest request) {
-        Article article = Article.create(
-                snowflake.nextId(), request.getTitle(), request.getContent(), request.getBoardId(), request.getWriterId()
+        Article article = articleRepository.save(
+                Article.create(snowflake.nextId(), request.getTitle(), request.getContent(), request.getBoardId(), request.getWriterId())
         );
         return ArticleResponse.from(article);
     }
