@@ -29,7 +29,7 @@ Secondary Index는 실제 데이터를 가지고 있지 않고, PK로 Clustered 
 create index idx_board_id_article_id on article(
     board_id asc, article_id desc
 );
-``` 
+```     
 
 #### 3. Covering Index
 
@@ -37,6 +37,28 @@ create index idx_board_id_article_id on article(
  - 쿼리가 인덱스만 보고 해결되고, 테이블에 접근하지 않아도 되기 때문에 조회 속도가 매우 빠르다
 
 ```mysql
-select board_id, article_id from article limit 30 offset 1999970
-``` 
+select board_id, article_id from article limit 30 offset 1499970
+```
 
+#### Covering Index를 활용하여 쿼리 성능을 최적화 해보자
+
+article 테이블을 아래와 같이 조회하면 내 환경 기준 약 6초가 걸린다 (정상 서비스 힘든 수준)
+
+```mysql
+select * from article where board_id = 1 order by article_id desc limit 30 offset 1499970;
+```
+
+위 쿼리가 느린 이유는 offset 1499970 때문에 1499970건을 스킵하는 과정에서 많은 데이터를 읽어야 하기 때문인데,    
+하지만 미리 만들어둔 `idx_board_id_article_id` 인덱스의 `board_id`, `article_id` 컬럼만 이용해 서브쿼리에서 필요한 PK 30개만 먼저 가져온 뒤,  
+그 PK를 기준으로 다시 전체 데이터를 조인하면 조회 속도가 크게 개선된다  
+
+```mysql
+select * from (
+    select board_id, article_id from article where board_id = 1 order by article_id desc limit 30 offset 1499970
+) t
+left join article on t.article_id = article.article_id;
+```
+이 방식은 서브쿼리 단계에서 인덱스만 읽어 불필요한 조회를 피하고, 최종적으로 필요한 30건만 조인하므로 속도가 매우 빨라진다  
+Index-Only Scan -> PK lookup
+
+---
